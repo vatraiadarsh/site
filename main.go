@@ -7,11 +7,21 @@ import (
 
   "database/sql"
   _ "github.com/mattn/go-sqlite3"
+
+  "encoding/json"
+
 )
 
 type Page struct {
   Name string
   DBStatus bool
+}
+
+type SearchResult struct {
+  Title string
+  Author string
+  Year string
+  ID string
 }
 
 func main()  {
@@ -30,5 +40,17 @@ func main()  {
       http.Error(w, err.Error(), http.StatusInternalServerError)
     }
   })
+
+  http.HandleFunc("/search", func(w http.ResponseWriter, r *http.Request){
+    results := []SearchResult{
+      SearchResult{"Some good people","Adarsha Bhattarai","2018","5355"},
+      SearchResult{" Advanture of people","Ashish oli","2013","5895"},
+    }
+    encoder := json.NewEncoder(w)
+    if err := encoder.Encode(results); err != nil {
+      http.Error(w, err.Error(), http.StatusInternalServerError)
+    }
+  })
+
   fmt.Println(http.ListenAndServe(":5000", nil))
 }
