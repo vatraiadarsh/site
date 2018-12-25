@@ -7,6 +7,11 @@
     <title>go lang</title>
 </head>
 <body>
-    <h1>hello {{.Name}} </h1>
+    <p>hello {{.Name}}</p>
+    {{if .DBStatus}}
+        <p> The database connection is alive!</p>
+    {{else}}
+        <p> The database connection is dead!</p>
+    {{end}}
 </body>
 </html>
